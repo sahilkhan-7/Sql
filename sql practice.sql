@@ -1,5 +1,8 @@
 -- Creating DataBAses
 CREATE DATABASE IF NOT EXISTS xyz_company;
+
+-- DROP DATABASE xyz_company;
+
 -- Using the specific Database
 USE xyz_company;
 
@@ -44,9 +47,9 @@ SELECT * FROM employees WHERE job_id = 'IT_PROG' AND salary > 60000;
 SELECT  * FROM employees ORDER BY last_name DESC; -- arrange data in descending order
 
 -- Limit Clause
-SELECT * FROM employees LIMIT 3
+SELECT * FROM employees LIMIT 3;
 
-SELECT * FROM employees ORDER BY last_name LIMIT 3
+SELECT * FROM employees ORDER BY last_name LIMIT 3;
 
 -- Updating Data
 UPDATE employees SET email = 'john.doe@company.com' WHERE employee_id = 1;
@@ -55,3 +58,91 @@ UPDATE employees SET manager_id = 5 WHERE employee_id = 2;
 
 -- Deleting data from table
 DELETE FROM employees WHERE employee_id = 4;
+
+-- Creating new table to perform joining operations
+
+CREATE Table departments(
+    department_id INT AUTO_INCREMENT,
+    department_name VARCHAR(100) NOT NULL,
+    location_id INT,
+    PRIMARY KEY(department_id)
+);
+
+INSERT INTO departments (department_id, department_name, location_id) VALUES
+(1, "HR", 2001),
+(2, "IT", 2002),
+(3, "Finance", 2003),
+(4, "Marketing", 3000);
+
+SELECT * FROM departments;
+
+CREATE TABLE employees1 (
+    employee_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department_id INT,
+    salary DECIMAL(10, 2),
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+INSERT INTO employees1 (first_name, last_name, department_id, salary) VALUES
+('John', 'Doe', 1, 60000),
+('Jane', 'Smith', 2, 50000),
+('Alice', 'Johnson', 1, 70000),
+('Bob', 'Brown', 3, 45000),
+('Charlie', 'Davis', NULL, 65000);
+
+SELECT * FROM employees1;
+SELECT * FROM departments;
+
+-- Inner Join
+SELECT employees1.first_name, employees1.last_name, departments.department_name
+FROM employees1
+INNER JOIN departments ON departments.department_id = employees1.department_id;
+
+-- Left Join or Left Outer Join
+-- Returns all records from the left table (employees), and the matched records from the right table (departments). 
+-- The result is NULL from the right side if there is no match.
+
+SELECT employees1.first_name, employees1.last_name, departments.department_name
+FROM employees1
+LEFT JOIN departments ON departments.department_id = employees1.department_id;
+
+-- Right Join or Right Outer Join
+-- Returns all records from the right table (employees), and the matched records from the left table (departments). 
+-- The result is NULL from the left side if there is no match.
+
+SELECT employees1.first_name, employees1.last_name, departments.department_name
+FROM employees1
+RIGHT JOIN departments ON departments.department_id = employees1.department_id;
+
+-- Full Outer Join
+-- Returns all records when there is a match in either left (employees) or right (departments) table.
+-- SELECT employees1.first_name, employees1.last_name, departments.department_name
+-- FROM employees1
+-- FULL OUTER JOIN departments ON departments.department_id = employees1.department_id;
+-- MySQL doesnt directly support full outer join
+
+-- INSTEAD WE CAN DO THIS TO GET THE FULL OUTER JOIN
+
+SELECT employees1.first_name, employees1.last_name, departments.department_name
+FROM employees1
+LEFT JOIN departments ON employees1.department_id = departments.department_id
+UNION
+SELECT employees1.first_name, employees1.last_name, departments.department_name
+FROM employees1
+RIGHT JOIN departments ON employees1.department_id = departments.department_id;
+
+-- Cross Join
+-- Returns the Cartesian product of the two tables. 
+-- Each row from the first table is combined with each row from the second table.
+SELECT employees1.first_name, employees1.last_name, departments.department_name
+FROM employees1
+CROSS JOIN departments;
+
+-- Alter Table
+ALTER TABLE employees1 ADD manager_id INT;
+
+UPDATE employees1 SET manager_id = 1 WHERE employee_id IN (2, 3);
+UPDATE employees1 SET manager_id = 3 WHERE employee_id = 4;
+

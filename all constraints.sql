@@ -11,6 +11,7 @@ CREATE TABLE student(
     city VARCHAR(20)   
 );
 
+
 -- Add a new (age) column to the student table with a CHECK constraint to ensure that the age is greater than or equal to 18.
 ALTER TABLE student ADD age INT CHECK (age >=18);
 
@@ -117,5 +118,32 @@ ALTER TABLE students CHANGE COLUMN rollno roll_no INT;
 
 ALTER TABLE students MODIFY COLUMN age INT; -- Age is already int
 
-TRUNCATE TABLE students;
+-- TRUNCATE TABLE students;
 
+SELECT AVG(marks) FROM student;
+
+SELECT name, marks FROM student WHERE marks > (SELECT AVG(marks) FROM student);
+
+-- Find the names of all the students with even roll numbers.
+SELECT rollno FROM student WHERE MOD(rollno, 2) = 0;
+
+SELECT name FROM student WHERE rollno IN (SELECT rollno FROM student WHERE MOD(rollno, 2) = 0);
+
+-- find the max marks from the student of Los Angeles
+
+SELECT * FROM student WHERE city = 'Los Angeles';
+
+SELECT MAX(marks) FROM (SELECT * FROM student WHERE city = 'Los Angeles') AS tmp;
+
+SELECT MAX(marks) FROM student WHERE city = 'Los Angeles';
+
+SELECT (SELECT MAX(marks) FROM student) AS max_marks, name FROM student;
+
+-- VIEWS 
+-- A view is a virtual table based on the result-set of an SQL statement;
+
+CREATE VIEW view1 AS SELECT rollno, name, marks FROM student;
+
+SELECT * FROM view1;
+
+-- DROP VIEW view2;

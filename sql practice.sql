@@ -76,7 +76,7 @@ INSERT INTO departments (department_id, department_name, location_id) VALUES
 
 SELECT * FROM departments;
 
-CREATE TABLE employees1 (
+CREATE TABLE employee (
     employee_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
@@ -85,64 +85,64 @@ CREATE TABLE employees1 (
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
 
-INSERT INTO employees1 (first_name, last_name, department_id, salary) VALUES
+INSERT INTO employee (first_name, last_name, department_id, salary) VALUES
 ('John', 'Doe', 1, 60000),
 ('Jane', 'Smith', 2, 50000),
 ('Alice', 'Johnson', 1, 70000),
 ('Bob', 'Brown', 3, 45000),
 ('Charlie', 'Davis', NULL, 65000);
 
-SELECT * FROM employees1;
+SELECT * FROM employee;
 SELECT * FROM departments;
 
 -- Inner Join
-SELECT employees1.first_name, employees1.last_name, departments.department_name
-FROM employees1
-INNER JOIN departments ON departments.department_id = employees1.department_id;
+SELECT employee.first_name, employee.last_name, departments.department_name
+FROM employee
+INNER JOIN departments ON departments.department_id = employee.department_id;
 
 -- Left Join or Left Outer Join
 -- Returns all records from the left table (employees), and the matched records from the right table (departments). 
 -- The result is NULL from the right side if there is no match.
 
-SELECT employees1.first_name, employees1.last_name, departments.department_name
-FROM employees1
-LEFT JOIN departments ON departments.department_id = employees1.department_id;
+SELECT employee.first_name, employee.last_name, departments.department_name
+FROM employee
+LEFT JOIN departments ON departments.department_id = employee.department_id;
 
 -- Right Join or Right Outer Join
 -- Returns all records from the right table (employees), and the matched records from the left table (departments). 
 -- The result is NULL from the left side if there is no match.
 
-SELECT employees1.first_name, employees1.last_name, departments.department_name
-FROM employees1
-RIGHT JOIN departments ON departments.department_id = employees1.department_id;
+SELECT employee.first_name, employee.last_name, departments.department_name
+FROM employee
+RIGHT JOIN departments ON departments.department_id = employee.department_id;
 
 -- Full Outer Join
 -- Returns all records when there is a match in either left (employees) or right (departments) table.
--- SELECT employees1.first_name, employees1.last_name, departments.department_name
--- FROM employees1
--- FULL OUTER JOIN departments ON departments.department_id = employees1.department_id;
+-- SELECT employee.first_name, employee.last_name, departments.department_name
+-- FROM employee
+-- FULL OUTER JOIN departments ON departments.department_id = employee.department_id;
 -- MySQL doesnt directly support full outer join
 
 -- INSTEAD WE CAN DO THIS TO GET THE FULL OUTER JOIN
 
-SELECT employees1.first_name, employees1.last_name, departments.department_name
-FROM employees1
-LEFT JOIN departments ON employees1.department_id = departments.department_id
+SELECT employee.first_name, employee.last_name, departments.department_name
+FROM employee
+LEFT JOIN departments ON employee.department_id = departments.department_id
 UNION
-SELECT employees1.first_name, employees1.last_name, departments.department_name
-FROM employees1
-RIGHT JOIN departments ON employees1.department_id = departments.department_id;
+SELECT employee.first_name, employee.last_name, departments.department_name
+FROM employee
+RIGHT JOIN departments ON employee.department_id = departments.department_id;
 
 -- Cross Join
 -- Returns the Cartesian product of the two tables. 
 -- Each row from the first table is combined with each row from the second table.
-SELECT employees1.first_name, employees1.last_name, departments.department_name
-FROM employees1
+SELECT employee.first_name, employee.last_name, departments.department_name
+FROM employee
 CROSS JOIN departments;
 
 -- Alter Table
-ALTER TABLE employees1 ADD manager_id INT;
+ALTER TABLE employee ADD manager_id INT;
 
-UPDATE employees1 SET manager_id = 1 WHERE employee_id IN (2, 3);
-UPDATE employees1 SET manager_id = 3 WHERE employee_id = 4;
+UPDATE employee SET manager_id = 1 WHERE employee_id IN (2, 3);
+UPDATE employee SET manager_id = 3 WHERE employee_id = 4;
 

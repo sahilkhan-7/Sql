@@ -91,3 +91,20 @@ SELECT city, LENGTH(city) FROM student;
 
 SELECT MAX(LENGTH(city)) AS longest_name_length, MIN(LENGTH(city)) AS shortest_name_length
 FROM student;
+
+UPDATE student SET grade = 'O' WHERE grade = 'A';
+
+UPDATE student SET grade = 'B' WHERE marks BETWEEN 80 AND 90;
+
+UPDATE student SET marks = marks + 1; -- we are doing it without where clause so MySQL will confirm it first
+
+-- DELETE : to delete existing rows
+SELECT * FROM student;
+
+INSERT INTO student(rollno, name, marks, grade, city, age) VALUES(12, 'Spider', 35, 'F', 'Delhi', 28);
+
+DELETE FROM student WHERE marks < 36;
+
+
+SELECT name, marks FROM student WHERE marks>75 ORDER BY RIGHT(name, 3) DESC;
+

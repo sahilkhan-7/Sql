@@ -108,3 +108,14 @@ DELETE FROM student WHERE marks < 36;
 
 SELECT name, marks FROM student WHERE marks>75 ORDER BY RIGHT(name, 3) DESC;
 
+ALTER TABLE student DROP COLUMN city;
+
+ALTER TABLE student RENAME TO students;
+SELECT * FROM students;
+
+ALTER TABLE students CHANGE COLUMN rollno roll_no INT;
+
+ALTER TABLE students MODIFY COLUMN age INT; -- Age is already int
+
+TRUNCATE TABLE students;
+
